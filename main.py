@@ -21,10 +21,8 @@ def encode(to_encode, key=''):
 	else:
 		key_dict = {}; key_dict = {char:index for index, char in enumerate(key)}
 		key = '-'.join(str(x) for x in [key_dict[char] for char in char_list])
-	print(key_dict)
 	cid = [key_dict.get(char) for char in [char for char in to_encode]]
 	numbers = [int(number) for number in digits[1:]]; coded_list1 = []; progress = 1
-	print(tuple(key_dict.items()))
 	for code in cid:
 		a_index = random.choice(range(1,132)); a = tuple(key_dict.items())[a_index][1]; b = random.choice(numbers)
 		coded_list1.append((((code+a)*b) ,f"{a}{b}"))
@@ -41,7 +39,6 @@ def decode(to_decode, key):
 	key_dict = {char_list[index]:[int(x) for x in key.split('-')][index] for index in range(len(char_list))}
 	parsed_code= to_decode.split('-'); coded_chars = parsed_code[::2]; abcds = parsed_code[1::2]
 	parsed_abcds = [[abcd[:-1], abcd[-1:]] for abcd in abcds]; equivalences = []
-	print(parsed_abcds)
 	for index in range(len(coded_chars)):
 		coded_char = int(coded_chars[index]); a, b = [int(number) for number in parsed_abcds[index]]
 		equivalences.append(int((coded_char/b)-a))
