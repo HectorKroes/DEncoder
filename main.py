@@ -21,10 +21,10 @@ def encode(to_encode, key=''):
 	else:
 		key_dict = {}; key_dict = {char:index for index, char in enumerate(key)}
 		key = '-'.join(str(x) for x in [key_dict[char] for char in char_list])
-	cid = [key_dict.get(char) for char in [char for char in to_encode]]
+	cid = [key_dict.get(char) for char in [char for char in to_encode]]; index_dict = tuple(key_dict.items())
 	numbers = [int(number) for number in digits[1:]]; coded_list1 = []; progress = 1
 	for code in cid:
-		a_index = random.choice(range(1,132)); a = tuple(key_dict.items())[a_index][1]; b = random.choice(numbers)
+		a_index = random.choice(range(1,132)); a = index_dict[a_index][1]; b = random.choice(numbers)
 		coded_list1.append((((code+a)*b) ,f"{a}{b}"))
 		sg.one_line_progress_meter('DEncoder', progress, len(cid), 'key','Encoding...')
 		progress += 1
@@ -105,6 +105,7 @@ def CheckKeyType(key):
 				negative_char_list.append(char)
 		key_second_half = (''.join(random.sample(negative_char_list, len(negative_char_list))))
 		key = f"{key_first_half}{key_second_half}"
+		random.seed()
 	return key
 
 def CheckForKey():
@@ -238,6 +239,8 @@ while ProgramON == True:
 
 			if event == '-encode-':
 
+				predefined_key = ''
+
 				if values['-message-'] != '\n' and values['-file_path-'] == '':
 
 					message = values['-message-'].strip('\n')
@@ -252,8 +255,6 @@ while ProgramON == True:
 
 					with open(values['-file_path-'], 'r', encoding = 'utf-8') as file:
 						message = repr(file.read().replace('\n', ''))
-					if values['-predefined_key-'] == True:
-						CheckForKey()
 					EncodeString(message, predefined_key)
 
 				elif values['-message-'] != '\n' and values['-file_path-'] != '':
